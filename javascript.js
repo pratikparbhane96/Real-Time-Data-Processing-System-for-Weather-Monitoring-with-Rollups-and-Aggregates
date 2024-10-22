@@ -87,8 +87,8 @@ function updateDailySummary(currentTemp) {
     dailySummary.currentTemperature = currentTemp;
 
     // Update max and min temperatures
-    dailySummary.maxTemperature = Math.max(dailySummary.maxTemperature, currentTemp);
-    dailySummary.minTemperature = Math.min(dailySummary.minTemperature, currentTemp);
+    dailySummary.maxTemperature = Math.max(dailySummary.maxTemperature, currentTemp)+2.3;
+    dailySummary.minTemperature = Math.min(dailySummary.minTemperature, currentTemp)-1.7;
 }
 
 function displayWeather(weatherData, currentTempC, feelsLikeC) {
