@@ -87,9 +87,13 @@ function updateDailySummary(currentTemp) {
     dailySummary.currentTemperature = currentTemp;
 
     // Update max and min temperatures
-    dailySummary.maxTemperature = Math.max(dailySummary.maxTemperature, currentTemp)+2.3;
-    dailySummary.minTemperature = Math.min(dailySummary.minTemperature, currentTemp)-1.7;
+    dailySummary.maxTemperature = Math.max(dailySummary.maxTemperature, currentTemp);
+    dailySummary.minTemperature = Math.min(dailySummary.minTemperature, currentTemp);
 }
+
+
+ 
+
 
 function displayWeather(weatherData, currentTempC, feelsLikeC) {
     const avgTemperature = (dailySummary.maxTemperature + dailySummary.minTemperature) / 2; // Recalculate average
@@ -130,52 +134,11 @@ fahrenheitBtn.addEventListener("click", () => {
     fetchWeather(city); // Fetch weather data again to update the display
 });
 
-// Function to prompt for city input or use current location
-async function promptForCity() {
-    const useCurrentLocation = confirm("Do you want to use your current location?");
-    if (useCurrentLocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            // Use the latitude and longitude to fetch weather data
-            await fetchWeatherByCoords(lat, lon);
-        }, (error) => {
-            console.error("Geolocation error: ", error);
-            const city = prompt("Could not get your location. Please enter a city name:");
-            fetchWeather(city); // Fetch weather for the entered city
-        });
-    } else {
-        const city = prompt("Please enter the city name:");
-        fetchWeather(city); // Fetch weather for the entered city
-    }
-}
-
-// Function to fetch weather by coordinates
-async function fetchWeatherByCoords(lat, lon) {
-    const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`);
-    const weatherData = await weatherResponse.json();
-    
-    // Convert temperature to Celsius
-    const currentTempC = kelvinToCelsius(weatherData.main.temp);
-    const feelsLikeC = kelvinToCelsius(weatherData.main.feels_like);
-
-    // Update daily summary data
-    updateDailySummary(currentTempC);
-    
-    // Display weather data
-    displayWeather(weatherData, currentTempC, feelsLikeC);
-
-    // Fetch past week weather data
-    fetchPastWeekWeather(lat, lon);
-
-    // Check for alerts
-    checkAlerts(currentTempC);
-}
-
 function startFetchingWeather() {
-    promptForCity(); // Prompt for city input or use current location
+    const city = document.getElementById('cityInput').value;
     clearInterval(intervalId); // Clear any existing intervals
-    intervalId = setInterval(promptForCity, 60000); // Repeat every minute
+    fetchWeather(city); // Fetch weather data immediately
+    intervalId = setInterval(() => fetchWeather(city), 60000); // Repeat every minute
 }
 
 // Event listener for the search form
