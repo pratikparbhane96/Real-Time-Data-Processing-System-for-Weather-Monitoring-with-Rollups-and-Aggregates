@@ -1,0 +1,2 @@
+# Real-Time-Data-Processing-System-for-Weather-Monitoring-with-Rollups-and-Aggregates
+The Real-Time Data Processing System for Weather Monitoring retrieves and analyzes weather data from the OpenWeatherMap API. It aggregates historical data, provides daily summaries, and alerts users based on temperature thresholds. Built with a client-server architecture, it runs in Docker containers for easy deployment. 
